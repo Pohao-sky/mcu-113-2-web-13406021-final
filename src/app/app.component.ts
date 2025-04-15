@@ -16,4 +16,8 @@ export class AppComponent {
   photourl = 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img';
 
   isShow = true;
+
+  onSetDisplay(isShow: boolean): void {
+    this.isShow = isShow;
+  }
 }

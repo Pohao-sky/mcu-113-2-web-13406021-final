@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, Input, numberAttribute } from '@angular/core';
+import { booleanAttribute, Component, EventEmitter, Input, numberAttribute, Output } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -19,11 +19,14 @@ export class ProductCardComponent {
   @Input()
   company!: string;
 
-  @Input()
-  photourl!: string;
-
   @Input({ transform: booleanAttribute })
   isShow!: boolean;
+
+  @Output()
+  isShowChange = new EventEmitter<boolean>();
+
+  @Input()
+  photourl!: string;
 
   onSetDisplay(isShow: boolean): void {
     this.isShow = isShow;
