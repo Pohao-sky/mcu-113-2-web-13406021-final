@@ -27,7 +27,7 @@ export class ProductCardComponent {
   isShowChange = new EventEmitter<boolean>();
 
   @Input()
-  photourl!: string;
+  photoUrl!: string;
 
   @Input()
   createDate!: Date;
