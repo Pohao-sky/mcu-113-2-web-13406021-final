@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { ProductService } from './../services/product.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Product } from '../models/product';
 import { Router } from '@angular/router';
@@ -9,61 +10,17 @@ import { Router } from '@angular/router';
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
-export class ProductPageComponent {
+export class ProductPageComponent implements OnInit {
   private router = inject(Router);
 
-  products: Product[] = [
-    new Product({
-      id: 1,
-      name: '書籍A',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '博碩文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 2,
-      name: '書籍B',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '博碩文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 3,
-      name: '書籍C',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '博碩文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 4,
-      name: '書籍D',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '博碩文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 5,
-      name: '書籍E',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '博碩文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-  ];
+  ProductService!: ProductService;
+
+  products: Product[] = [];
+
+  ngOnInit(): void {
+    this.ProductService = new ProductService();
+    this.products = this.ProductService.getList();
+  }
 
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
