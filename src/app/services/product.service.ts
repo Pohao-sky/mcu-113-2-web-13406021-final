@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product';
+import { delay, filter, mergeMap, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -108,15 +109,19 @@ export class ProductService {
     }),
   ];
 
-  getById(productId: number): Product {
-    return this._data.find(({ id }) => id === productId)!;
+  getById(productId: number): Observable<Product> {
+    return of(this._data).pipe(
+      mergeMap((data) => data),
+      filter(({ id }) => id === productId)
+    );
+    //return this._data.find(({ id }) => id === productId)!;
   }
 
-  getList(name: string | undefined, index: number, size: number): { data: Product[]; count: number } {
+  getList(name: string | undefined, index: number, size: number): Observable<{ data: Product[]; count: number }> {
     const startIndex = (index - 1) * size;
     const endIndex = startIndex + size;
 
     const data = name ? this._data.filter((item) => item.name === name) : [...this._data];
-    return { data: data.slice(startIndex, endIndex), count: this._data.length };
+    return of({ data: data.slice(startIndex, endIndex), count: this._data.length }).pipe(delay(1000));
   }
 }
