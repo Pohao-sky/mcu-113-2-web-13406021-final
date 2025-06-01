@@ -1,10 +1,11 @@
 import { ProductService } from './../services/product.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Product } from '../models/product';
 import { Router } from '@angular/router';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { BehaviorSubject, merge, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, switchMap, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',
@@ -27,21 +28,22 @@ export class ProductPageComponent {
 
   pageSize = 5;
 
-  totalCount = 0;
+  private readonly data$ = this.pageIndex$.pipe(
+    tap((value) => console.log('page index', value)),
+    switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pageSize))
+  );
 
-  products: Product[] = [];
+  private readonly data = toSignal(this.data$, { initialValue: { data: [], count: 0 } });
 
-  ngOnInit(): void {
-    this.pageIndex$
-      .pipe(
-        tap((value) => console.log(value)),
-        switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pageSize))
-      )
-      .subscribe(({ data, count }) => {
-        this.products = data;
-        this.totalCount = count;
-      });
-  }
+  readonly totalCount = computed(() => {
+    const { count } = this.data();
+    return count;
+  });
+
+  readonly products = computed(() => {
+    const { data } = this.data();
+    return data;
+  });
 
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
