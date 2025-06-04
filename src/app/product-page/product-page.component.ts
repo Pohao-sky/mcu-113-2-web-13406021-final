@@ -1,12 +1,11 @@
 import { ProductService } from './../services/product.service';
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Product } from '../models/product';
 import { Router } from '@angular/router';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -16,26 +15,18 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 })
 export class ProductPageComponent {
   private router = inject(Router);
-
   private productService = inject(ProductService);
 
   readonly pageIndex = signal(1);
-
-  private destroyRef = inject(DestroyRef);
-
-  readonly searchControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
-
-  readonly productName = toSignal(
-    this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef)),
-    {
-      initialValue: undefined,
-    }
-  );
-
   readonly pageSize = signal(5);
 
+  // 查詢欄位
+  readonly searchControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
+  // 真正查詢用的 keyword
+  readonly searchKeyword = signal<string | undefined>(undefined);
+
   private readonly data = rxResource({
-    request: () => ({ name: this.productName(), pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
+    request: () => ({ name: this.searchKeyword(), pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
     defaultValue: { data: [], count: 0 },
     loader: ({ request }) => {
       const { name, pageIndex, pageSize } = request;
@@ -43,15 +34,15 @@ export class ProductPageComponent {
     },
   });
 
-  readonly totalCount = computed(() => {
-    const { count } = this.data.value();
-    return count;
-  });
+  readonly totalCount = computed(() => this.data.value().count);
+  readonly products = computed(() => this.data.value().data);
 
-  readonly products = computed(() => {
-    const { data } = this.data.value();
-    return data;
-  });
+  onSearch(): void {
+    // 只有按下查詢時，才會改變查詢值
+    this.searchKeyword.set(this.searchControl.value);
+    // 按查詢時也可以回到第一頁
+    this.pageIndex.set(1);
+  }
 
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
