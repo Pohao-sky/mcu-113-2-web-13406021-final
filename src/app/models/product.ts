@@ -19,4 +19,6 @@ export class Product {
   photoUrl!: string;
 
   createDate!: Date;
+
+  specialPrice?: number;
 }

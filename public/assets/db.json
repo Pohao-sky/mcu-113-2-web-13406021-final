@@ -12,7 +12,8 @@
       "isShow": true,
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
       "createDate": "2023-10-17T00:00:00.000+08:00",
-      "price": 10000
+      "price": 10000,
+      "specialPrice": 5000
     },
     {
       "id": "2",
