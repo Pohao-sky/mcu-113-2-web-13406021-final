@@ -1,6 +1,12 @@
 <img [src]="photoUrl()" alt="" />
 <div class="content">
-  <strong [class.hidden]="!isShow">{{ id() }}. {{ productName() }}</strong>
+  <strong
+    [class.hidden]="!isShow"
+    [style.color]="specialPrice() !== undefined && specialPrice() !== null && typeof specialPrice() === 'number' && specialPrice() === specialPrice() ? 'red' : 'black'"
+  >
+    {{ id() }}. {{ productName() }}
+  </strong>
+
   <span>{{ createDate() | date: 'yyyy-MM-dd' }}</span>
 </div>
 <div>
@@ -12,7 +18,14 @@
 </div>
 <div class="company">
   <span>{{ company() }}</span>
-  <span>{{ price() |currency:'$' : 'symbol' : '4.0' }}</span>
+  <span>
+    @if (specialPrice() !== undefined && specialPrice() !== null && typeof specialPrice() === 'number' && specialPrice() === specialPrice())
+    {
+    <span> {{ specialPrice() | currency:'$' : 'symbol' : '4.0' }} </span>
+    } @else {
+    <span> {{ price() | currency:'$' : 'symbol' : '4.0' }} </span>
+    }
+  </span>
 </div>
 <div class="button">
   <button type="button" (click)="view.emit()">明細</button>

@@ -24,6 +24,8 @@ export class ProductCardComponent {
 
   readonly price = input<number, string | number>(0, { transform: numberAttribute });
 
+  readonly specialPrice = input<number, string | number | undefined>(undefined, { transform: numberAttribute });
+
   readonly view = output<void>();
 
   @HostBinding('class')
