@@ -1,1 +1,24 @@
-<p>buy-cart works!</p>
+<div class="cart-page">
+  <div class="customer-info">
+    <h3>基本資料</h3>
+    <label>姓名 <input type="text" [(ngModel)]="customer.name" /></label>
+    <label>地址 <input type="text" [(ngModel)]="customer.address" /></label>
+    <label>電話 <input type="text" [(ngModel)]="customer.phone" /></label>
+  </div>
+  <div class="cart-list">
+    <h3>購買項目</h3>
+    <table>
+      <tr *ngFor="let item of cart; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td><input type="number" [(ngModel)]="item.qty" min="1" placeholder=/></td>
+        <td>${{item.specialPrice || item.price}}</td>
+        <td>${{(item.specialPrice || item.price) * item.qty}}</td>
+        <td><button (click)="remove(i)">刪除</button></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="total-count">
+  <button [disabled]="!canCheckout()" (click)="checkout()">送出訂單 ({{cartTotal()}})</button>
+</div>

@@ -1,0 +1,154 @@
+$primary: #1677ff;
+$danger: #ff0000;
+$border: #ddd;
+$bg-main: #fff;
+$bg-table: #fafbfc;
+$bg-table-header: #f5f6fa;
+$radius: 6px;
+$input-height: 28px;
+$input-font: 16px;
+
+.cart-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 40px 20px 40px;
+  gap: 24px;
+
+  .customer-info {
+    flex: 0 0 380px;
+    background: $bg-main;
+    border: 1px solid $border;
+    border-radius: $radius;
+    padding: 20px 30px 20px 30px;
+    margin-bottom: 20px;
+
+    h3 {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    label {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 17px;
+      margin-bottom: 18px;
+
+      input[type='text'] {
+        width: 220px;
+        height: $input-height;
+        padding: 5px 8px;
+        font-size: $input-font;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-left: 35px;
+      }
+    }
+  }
+
+  .cart-list {
+    flex: 1;
+    min-width: 480px;
+    background: $bg-main;
+    border: 1px solid $border;
+    border-radius: $radius;
+    padding: 18px 24px 24px 24px;
+
+    h3 {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      background: $bg-table;
+
+      th,
+      td {
+        border: none;
+        padding: 10px 7px;
+        text-align: center;
+        font-size: $input-font;
+      }
+
+      th {
+        background: $bg-table-header;
+        font-weight: bold;
+      }
+
+      td {
+        &:nth-child(1),
+        &.no {
+          width: 40px;
+        }
+        &:nth-child(3) {
+          width: 80px;
+        }
+        &:nth-child(4),
+        &:nth-child(5) {
+          width: 100px;
+        }
+        &:nth-child(6) {
+          width: 70px;
+        }
+
+        input[type='number'] {
+          width: 60px;
+          height: $input-height;
+          font-size: $input-font;
+          text-align: center;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    > div {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    button {
+      background: $danger;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 18px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 0 2px;
+    }
+  }
+}
+
+.total-count {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+
+  button {
+    background: $primary;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 2px;
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
