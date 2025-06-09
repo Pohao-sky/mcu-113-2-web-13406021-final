@@ -1,10 +1,27 @@
 <div class="cart-page">
-  <div class="customer-info">
-    <h3>基本資料</h3>
-    <label>姓名 <input type="text" [(ngModel)]="customer.name" /></label>
-    <label>地址 <input type="text" [(ngModel)]="customer.address" /></label>
-    <label>電話 <input type="text" [(ngModel)]="customer.phone" /></label>
-  </div>
+  <form #f="ngForm">
+    <div class="customer-info">
+      <h3>基本資料</h3>
+
+      <div class="form-row">
+        <label>姓名</label>
+        <input type="text" name="name" [(ngModel)]="customer.name" required #name="ngModel" placeholder=/>
+      </div>
+      <div class="error" *ngIf="name.invalid">請輸入姓名</div>
+
+      <div class="form-row">
+        <label>地址</label>
+        <input type="text" name="address" [(ngModel)]="customer.address" required #address="ngModel" placeholder=/>
+      </div>
+      <div class="error" *ngIf="address.invalid">請輸入地址</div>
+
+      <div class="form-row">
+        <label>電話</label>
+        <input type="text" name="phone" [(ngModel)]="customer.phone" required #phone="ngModel" placeholder=/>
+      </div>
+      <div class="error" *ngIf="phone.invalid">請輸入電話</div>
+    </div>
+  </form>
   <div class="cart-list">
     <h3>購買項目</h3>
     <table>
