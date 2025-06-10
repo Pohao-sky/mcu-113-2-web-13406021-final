@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Cart } from '../models/cart';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-buy-cart',
@@ -9,17 +10,27 @@ import { Cart } from '../models/cart';
   templateUrl: './buy-cart.component.html',
   styleUrl: './buy-cart.component.scss',
 })
-export class BuyCartComponent {
+export class BuyCartComponent implements OnInit {
+  //基本資料
   customer = {
     name: '',
     address: '',
     phone: '',
   };
 
-  carts: Cart[] = [
-    new Cart({ id: 1, name: '書籍 A', price: 2000, specialPrice: 1580, qty: 1 }),
-    new Cart({ id: 2, name: '書籍 B', price: 1580, qty: 2 }),
-  ];
+  canCheckout() {
+    return this.customer.name && this.customer.address && this.customer.phone && this.carts.length > 0;
+  }
+
+  //購買項目
+  cartService!: CartService;
+
+  carts: Cart[] = [];
+
+  ngOnInit(): void {
+    this.cartService = new CartService();
+    this.carts = this.cartService.getList();
+  }
 
   cartsTotal() {
     return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
@@ -27,11 +38,6 @@ export class BuyCartComponent {
 
   remove(i: number) {
     this.carts.splice(i, 1);
-  }
-
-  canCheckout() {
-    // 三個欄位都要有值、購物車不能是空的
-    return this.customer.name && this.customer.address && this.customer.phone && this.carts.length > 0;
   }
 
   checkout() {
