@@ -24,7 +24,8 @@
   </form>
   <div class="cart-list">
     <h3>購買項目</h3>
-    <table>
+    <div class="cart-empty" *ngIf="!carts || carts.length === 0">購物車內尚無商品</div>
+    <table *ngIf="carts && carts.length > 0">
       <tr *ngFor="let item of carts; let i = index">
         <td>{{i+1}}</td>
         <td>{{item.name}}</td>
