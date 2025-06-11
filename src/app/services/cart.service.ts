@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Cart } from '../models/cart';
+import { CartRemoteService } from './cart-remote.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private _data: Cart[] = [
-    new Cart({ id: 1, name: '書籍 A', price: 2000, specialPrice: 1580, qty: 1 }),
-    new Cart({ id: 2, name: '書籍 B', price: 1580, qty: 2 }),
-  ];
+  constructor(private remote: CartRemoteService) {}
 
-  getList(): Cart[] {
-    return this._data;
+  getList(): Observable<Cart[]> {
+    return this.remote.getCartList();
   }
 }

@@ -28,7 +28,9 @@ export class BuyCartComponent implements OnInit {
   carts: Cart[] = [];
 
   ngOnInit(): void {
-    this.carts = this.cartService.getList();
+    this.cartService.getList().subscribe((data) => {
+      this.carts = data;
+    });
   }
 
   cartsTotal() {
