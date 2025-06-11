@@ -1,0 +1,17 @@
+{
+  "carts": [
+    {
+      "id": 1,
+      "name": "書籍 A",
+      "price": 2000,
+      "specialPrice": 1580,
+      "qty": 1
+    },
+    {
+      "id": 2,
+      "name": "書籍 B",
+      "price": 1580,
+      "qty": 2
+    }
+  ]
+}
