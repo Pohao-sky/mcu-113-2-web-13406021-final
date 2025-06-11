@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
@@ -23,12 +23,11 @@ export class BuyCartComponent implements OnInit {
   }
 
   //購買項目
-  cartService!: CartService;
+  private cartService = inject(CartService);
 
   carts: Cart[] = [];
 
   ngOnInit(): void {
-    this.cartService = new CartService();
     this.carts = this.cartService.getList();
   }
 
