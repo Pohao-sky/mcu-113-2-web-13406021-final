@@ -1,0 +1,2 @@
+# Get List
+GET http://[::]:3001/carts HTTP/1.1
