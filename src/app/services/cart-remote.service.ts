@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Cart } from '../models/cart';
 
 @Injectable({
@@ -17,6 +17,10 @@ export class CartRemoteService {
 
   deleteCart(id: string): Observable<any> {
     return this.http.delete(`${this.url}/${id}`);
+  }
+
+  updateQty(id: string, qty: number): Observable<any> {
+    return this.http.patch(`${this.url}/${id}`, { qty });
   }
 
   addToCart(newItem: Cart): Observable<any> {

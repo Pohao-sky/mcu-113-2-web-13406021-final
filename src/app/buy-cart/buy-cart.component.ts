@@ -31,9 +31,22 @@ export class BuyCartComponent implements OnInit {
   carts: Cart[] = [];
 
   ngOnInit(): void {
+    // 初始化時記錄所有商品的初始數量
     this.cartService.getList().subscribe((data) => {
       this.carts = data;
+      this.lastQtyMap.clear();
+      this.carts.forEach((c) => this.lastQtyMap.set(c.id, c.qty));
     });
+  }
+
+  private lastQtyMap = new Map<string, number>();
+
+  onQtyBlur(item: Cart) {
+    // 判斷有沒有真的變動，沒變動就不用發 API
+    if (this.lastQtyMap.get(item.id) !== item.qty) {
+      this.cartRemoteService.updateQty(item.id, item.qty).subscribe();
+      this.lastQtyMap.set(item.id, item.qty);
+    }
   }
 
   cartsTotal() {
@@ -44,7 +57,7 @@ export class BuyCartComponent implements OnInit {
     const item = this.carts[i];
     if (!item?.id) return;
     this.cartRemoteService.deleteCart(item.id).subscribe(() => {
-      this.carts.splice(i, 1); // 本地也刪
+      this.carts.splice(i, 1);
     });
   }
 

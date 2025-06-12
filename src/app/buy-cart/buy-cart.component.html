@@ -29,7 +29,10 @@
       <tr *ngFor="let item of carts; let i = index">
         <td>{{i+1}}</td>
         <td>{{item.name}}</td>
-        <td><input type="number" [(ngModel)]="item.qty" min="1" placeholder=/></td>
+        <td>
+          <input type="number" min="1" step="1" [(ngModel)]="item.qty" (blur)="onQtyBlur(item)" (keydown.enter)="onQtyBlur(item)"
+          placeholder=/>
+        </td>
         <td>${{item.specialPrice || item.price}}</td>
         <td>${{(item.specialPrice || item.price) * item.qty}}</td>
         <td><button (click)="remove(i)">刪除</button></td>
