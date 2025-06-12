@@ -11,7 +11,20 @@
       "id": "2",
       "name": "書籍 B",
       "price": 1580,
-      "qty": 2
+      "qty": 3
+    },
+    {
+      "id": "4",
+      "name": "書籍 D",
+      "price": 1580,
+      "specialPrice": null,
+      "qty": 1
+    },
+    {
+      "id": "3",
+      "name": "書籍 C",
+      "price": 1580,
+      "qty": 1
     }
   ]
 }

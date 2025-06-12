@@ -55,25 +55,17 @@ export class ProductDetailPageComponent {
 
   readonly pageSize = signal(5);
 
-  readonly id = input.required<number, string | number>({ transform: numberAttribute });
-
-  readonly price = input<number, string | number>(0, { transform: numberAttribute });
-
-  readonly specialPrice = input<number, string | number | undefined>(undefined, { transform: numberAttribute });
-
-  onBack(): void {
-    this.router.navigate(['products']);
-  }
   private cartRemote = inject(CartRemoteService);
 
   showAddCartMsg = false;
 
   onAddToCart() {
+    const product = this.product();
     const cartItem = {
-      id: String(this.id()),
-      name: this.productName()!,
-      price: this.price(),
-      specialPrice: this.specialPrice(),
+      id: String(product.id),
+      name: product.name,
+      price: product.price,
+      specialPrice: product.specialPrice,
       qty: 1,
     };
 
@@ -83,5 +75,9 @@ export class ProductDetailPageComponent {
         this.showAddCartMsg = false;
       }, 1000);
     });
+  }
+
+  onBack(): void {
+    this.router.navigate(['products']);
   }
 }
