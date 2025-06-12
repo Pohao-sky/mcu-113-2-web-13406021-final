@@ -1,11 +1,12 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, numberAttribute, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../models/product';
 import { ProductService } from '../services/product.service';
 import { FormControl } from '@angular/forms';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { CartRemoteService } from '../services/cart-remote.service';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -54,7 +55,33 @@ export class ProductDetailPageComponent {
 
   readonly pageSize = signal(5);
 
+  readonly id = input.required<number, string | number>({ transform: numberAttribute });
+
+  readonly price = input<number, string | number>(0, { transform: numberAttribute });
+
+  readonly specialPrice = input<number, string | number | undefined>(undefined, { transform: numberAttribute });
+
   onBack(): void {
     this.router.navigate(['products']);
+  }
+  private cartRemote = inject(CartRemoteService);
+
+  showAddCartMsg = false;
+
+  onAddToCart() {
+    const cartItem = {
+      id: String(this.id()),
+      name: this.productName()!,
+      price: this.price(),
+      specialPrice: this.specialPrice(),
+      qty: 1,
+    };
+
+    this.cartRemote.addToCart(cartItem).subscribe(() => {
+      this.showAddCartMsg = true;
+      setTimeout(() => {
+        this.showAddCartMsg = false;
+      }, 1000);
+    });
   }
 }

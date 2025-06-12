@@ -1,9 +1,10 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { booleanAttribute, Component, HostBinding, input, numberAttribute, output } from '@angular/core';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { booleanAttribute, Component, HostBinding, inject, input, numberAttribute, output } from '@angular/core';
+import { CartRemoteService } from '../services/cart-remote.service';
 
 @Component({
   selector: 'app-product-card',
-  imports: [DatePipe, CurrencyPipe],
+  imports: [DatePipe, CurrencyPipe, CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
@@ -30,4 +31,25 @@ export class ProductCardComponent {
 
   @HostBinding('class')
   class = 'app-product-cart';
+
+  private cartRemote = inject(CartRemoteService);
+
+  showAddCartMsg = false;
+
+  onAddToCart() {
+    const cartItem = {
+      id: String(this.id()),
+      name: this.productName()!,
+      price: this.price(),
+      specialPrice: this.specialPrice(),
+      qty: 1,
+    };
+
+    this.cartRemote.addToCart(cartItem).subscribe(() => {
+      this.showAddCartMsg = true;
+      setTimeout(() => {
+        this.showAddCartMsg = false;
+      }, 1000);
+    });
+  }
 }

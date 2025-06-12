@@ -3,7 +3,7 @@ export class Cart {
     Object.assign(this, init);
   }
 
-  id!: number;
+  id!: string;
 
   name!: string;
 

@@ -10,6 +10,6 @@ export class CartService {
   constructor(private remote: CartRemoteService) {}
 
   getList(): Observable<Cart[]> {
-    return this.remote.getCartList();
+    return this.remote.getAll();
   }
 }

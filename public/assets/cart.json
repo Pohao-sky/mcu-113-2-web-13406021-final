@@ -1,17 +1,38 @@
 {
   "carts": [
     {
-      "id": 1,
+      "id": "1",
       "name": "書籍 A",
       "price": 2000,
       "specialPrice": 1580,
-      "qty": 1
+      "qty": 3
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "書籍 B",
       "price": 1580,
       "qty": 2
+    },
+    {
+      "id": "4",
+      "name": "書籍 D",
+      "price": 1580,
+      "specialPrice": null,
+      "qty": 1
+    },
+    {
+      "id": "5",
+      "name": "書籍 E",
+      "price": 1580,
+      "specialPrice": null,
+      "qty": 1
+    },
+    {
+      "id": "8",
+      "name": "書籍 H",
+      "price": 1580,
+      "specialPrice": null,
+      "qty": 1
     }
   ]
 }
