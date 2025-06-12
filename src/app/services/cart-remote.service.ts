@@ -15,6 +15,10 @@ export class CartRemoteService {
     return this.http.get<Cart[]>(this.url);
   }
 
+  deleteCart(id: string): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`);
+  }
+
   addToCart(newItem: Cart): Observable<any> {
     // 先找同 id
     return this.http.get<Cart[]>(`${this.url}?id=${newItem.id}`).pipe(

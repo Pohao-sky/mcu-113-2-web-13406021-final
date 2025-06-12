@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
+import { CartRemoteService } from '../services/cart-remote.service';
 
 @Component({
   selector: 'app-buy-cart',
@@ -25,6 +26,8 @@ export class BuyCartComponent implements OnInit {
   //購買項目
   private cartService = inject(CartService);
 
+  private cartRemoteService = inject(CartRemoteService);
+
   carts: Cart[] = [];
 
   ngOnInit(): void {
@@ -38,7 +41,11 @@ export class BuyCartComponent implements OnInit {
   }
 
   remove(i: number) {
-    this.carts.splice(i, 1);
+    const item = this.carts[i];
+    if (!item?.id) return;
+    this.cartRemoteService.deleteCart(item.id).subscribe(() => {
+      this.carts.splice(i, 1); // 本地也刪
+    });
   }
 
   checkout() {
