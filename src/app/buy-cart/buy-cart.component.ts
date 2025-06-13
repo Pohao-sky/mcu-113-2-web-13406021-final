@@ -18,27 +18,34 @@ export class BuyCartComponent implements OnInit {
     phone: '',
   };
 
-  canCheckout() {
-    return this.customer.name && this.customer.address && this.customer.phone && this.carts.length > 0;
-  }
-
   //購買項目
   private cartService = inject(CartService);
 
   carts: Cart[] = [];
+  cartsTotal = 0;
 
   ngOnInit(): void {
     this.carts = this.cartService.getList();
-  }
-
-  cartsTotal() {
-    return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
+    this.updateState();
   }
 
   remove(i: number) {
     this.carts.splice(i, 1);
+    this.updateState();
   }
 
+  onInputChange() {
+    this.updateState();
+  }
+
+  //送出訂單
+  canCheckout = false;
+  updateState() {
+    // 算總價
+    this.cartsTotal = this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
+    // 檢查能否送出
+    this.canCheckout = !!this.customer.name && !!this.customer.address && !!this.customer.phone && this.carts.length > 0;
+  }
   checkout() {
     alert('訂單已送出');
     // TODO: 清空購物車或跳轉頁面

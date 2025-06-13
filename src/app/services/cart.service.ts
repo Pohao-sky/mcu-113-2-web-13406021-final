@@ -6,8 +6,8 @@ import { Cart } from '../models/cart';
 })
 export class CartService {
   private _data: Cart[] = [
-    new Cart({ id: 1, name: '書籍 A', price: 2000, specialPrice: 1580, qty: 1 }),
-    new Cart({ id: 2, name: '書籍 B', price: 1580, qty: 2 }),
+    new Cart({ id: '1', name: '書籍 A', price: 2000, specialPrice: 1580, qty: 1 }),
+    new Cart({ id: '2', name: '書籍 B', price: 1580, qty: 2 }),
   ];
 
   getList(): Cart[] {

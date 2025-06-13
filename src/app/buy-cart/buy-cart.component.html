@@ -38,5 +38,5 @@
   </div>
 </div>
 <div class="total-count">
-  <button [disabled]="!canCheckout()" (click)="checkout()">送出訂單 ({{cartsTotal()}})</button>
+  <button [disabled]="!canCheckout" (click)="checkout()">送出訂單 ({{ cartsTotal }})</button>
 </div>
