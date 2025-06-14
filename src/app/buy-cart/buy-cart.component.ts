@@ -29,8 +29,12 @@ export class BuyCartComponent implements OnInit {
   private cartService = inject(CartService);
 
   carts: Cart[] = [];
-  cartsTotal = 0;
   canCheckout = false;
+
+  // cartsTotal 改成 getter
+  get cartsTotal(): number {
+    return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
+  }
 
   remove(i: number) {
     this.carts.splice(i, 1);
@@ -38,7 +42,6 @@ export class BuyCartComponent implements OnInit {
   }
 
   updateState() {
-    this.cartsTotal = this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
     this.canCheckout = this.customerForm.valid && this.carts.length > 0;
   }
 
