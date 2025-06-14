@@ -1,51 +1,47 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-buy-cart',
-  imports: [FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './buy-cart.component.html',
   styleUrl: './buy-cart.component.scss',
 })
 export class BuyCartComponent implements OnInit {
-  //基本資料
-  customer = {
-    name: '',
-    address: '',
-    phone: '',
-  };
+  ngOnInit(): void {
+    this.carts = this.cartService.getList();
+    this.updateState();
 
-  //購買項目
+    this.customerForm.valueChanges.subscribe(() => this.updateState());
+  }
+
+  // 基本資料
+  customerForm = inject(FormBuilder).group({
+    name: ['', Validators.required],
+    address: ['', Validators.required],
+    phone: ['', Validators.required],
+  });
+
+  //購物車資料
   private cartService = inject(CartService);
 
   carts: Cart[] = [];
   cartsTotal = 0;
-
-  ngOnInit(): void {
-    this.carts = this.cartService.getList();
-    this.updateState();
-  }
+  canCheckout = false;
 
   remove(i: number) {
     this.carts.splice(i, 1);
     this.updateState();
   }
 
-  onInputChange() {
-    this.updateState();
+  updateState() {
+    this.cartsTotal = this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
+    this.canCheckout = this.customerForm.valid && this.carts.length > 0;
   }
 
-  //送出訂單
-  canCheckout = false;
-  updateState() {
-    // 算總價
-    this.cartsTotal = this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
-    // 檢查能否送出
-    this.canCheckout = !!this.customer.name && !!this.customer.address && !!this.customer.phone && this.carts.length > 0;
-  }
   checkout() {
     alert('訂單已送出');
     // TODO: 清空購物車或跳轉頁面

@@ -1,27 +1,30 @@
 <div class="cart-page">
-  <form #f="ngForm">
+  <!-- 基本資料：Reactive Form & @if -->
+  <form [formGroup]="customerForm" autocomplete="off">
     <div class="customer-info">
       <h3>基本資料</h3>
-
       <div class="form-row">
         <label>姓名</label>
-        <input type="text" name="name" [(ngModel)]="customer.name" required #name="ngModel" placeholder=/>
+        <input type="text" formControlName="name" placeholder=/> @if (customerForm.get('name')?.invalid ) {
+        <div class="error">請輸入姓名</div>
+        }
       </div>
-      <div class="error" *ngIf="name.invalid">請輸入姓名</div>
-
       <div class="form-row">
         <label>地址</label>
-        <input type="text" name="address" [(ngModel)]="customer.address" required #address="ngModel" placeholder=/>
+        <input type="text" formControlName="address" placeholder=/> @if (customerForm.get('address')?.invalid ) {
+        <div class="error">請輸入地址</div>
+        }
       </div>
-      <div class="error" *ngIf="address.invalid">請輸入地址</div>
-
       <div class="form-row">
         <label>電話</label>
-        <input type="text" name="phone" [(ngModel)]="customer.phone" required #phone="ngModel" placeholder=/>
+        <input type="text" formControlName="phone" placeholder=/> @if (customerForm.get('phone')?.invalid ) {
+        <div class="error">請輸入電話</div>
+        }
       </div>
-      <div class="error" *ngIf="phone.invalid">請輸入電話</div>
     </div>
   </form>
+
+  <!-- 以下購買項目不用改，直接照你原本的即可 -->
   <div class="cart-list">
     <h3>購買項目</h3>
     <div class="cart-empty" *ngIf="!carts || carts.length === 0">購物車內尚無商品</div>
