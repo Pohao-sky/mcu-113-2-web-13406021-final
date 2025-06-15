@@ -20,9 +20,7 @@ export class ProductPageComponent {
   readonly pageIndex = signal(1);
   readonly pageSize = signal(5);
 
-  // 查詢欄位
   readonly searchControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
-  // 真正查詢用的 keyword
   readonly searchKeyword = signal<string | undefined>(undefined);
 
   private readonly data = rxResource({
