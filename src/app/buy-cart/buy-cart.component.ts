@@ -36,7 +36,8 @@ export class BuyCartComponent implements OnInit {
   onQtyChange(i: number, value: string) {
     const qty = parseInt(value, 10);
     if (!isNaN(qty) && qty > 0) {
-      this.carts[i].qty = qty;
+      this.cartService.updateQty(i, qty);
+      this.carts = this.cartService.getList();
       this.updateState();
     }
   }
