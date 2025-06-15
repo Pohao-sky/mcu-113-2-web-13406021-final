@@ -1,5 +1,4 @@
 <div class="cart-page">
-  <!-- 基本資料：Reactive Form & @if -->
   <form [formGroup]="customerForm" autocomplete="off">
     <div class="customer-info">
       <h3>基本資料</h3>
@@ -24,20 +23,30 @@
     </div>
   </form>
 
-  <!-- 以下購買項目不用改，直接照你原本的即可 -->
   <div class="cart-list">
     <h3>購買項目</h3>
-    <div class="cart-empty" *ngIf="!carts || carts.length === 0">購物車內尚無商品</div>
-    <table *ngIf="carts && carts.length > 0">
-      <tr *ngFor="let item of carts; let i = index">
-        <td>{{i+1}}</td>
-        <td>{{item.name}}</td>
-        <td><input type="number" [(ngModel)]="item.qty" min="1" placeholder=/></td>
-        <td>${{item.specialPrice || item.price}}</td>
-        <td>${{(item.specialPrice || item.price) * item.qty}}</td>
-        <td><button (click)="remove(i)">刪除</button></td>
-      </tr>
+    @if (!carts || carts.length === 0) {
+    <div class="cart-empty">購物車內尚無商品</div>
+    } @if (carts && carts.length > 0) {
+    <table>
+      <tbody>
+        @for (item of carts; track item.id; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>
+            <input type="number" [value]="item.qty" min="1" (input)="onQtyChange(i, $any($event.target).value)" placeholder="數量" />
+          </td>
+          <td>${{ item.specialPrice || item.price }}</td>
+          <td>${{ (item.specialPrice || item.price) * item.qty }}</td>
+          <td>
+            <button (click)="remove(i)">刪除</button>
+          </td>
+        </tr>
+        }
+      </tbody>
     </table>
+    }
   </div>
 </div>
 <div class="total-count">

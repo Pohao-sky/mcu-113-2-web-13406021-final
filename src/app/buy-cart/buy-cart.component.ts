@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-buy-cart',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './buy-cart.component.html',
-  styleUrl: './buy-cart.component.scss',
+  styleUrls: ['./buy-cart.component.scss'],
 })
 export class BuyCartComponent implements OnInit {
+  private fb = inject(FormBuilder);
+
   ngOnInit(): void {
     this.carts = this.cartService.getList();
     this.updateState();
@@ -19,21 +22,23 @@ export class BuyCartComponent implements OnInit {
   }
 
   // 基本資料
-  customerForm = inject(FormBuilder).group({
+  customerForm = this.fb.group({
     name: ['', Validators.required],
     address: ['', Validators.required],
     phone: ['', Validators.required],
   });
 
-  //購物車資料
+  // 購物車
   private cartService = inject(CartService);
-
   carts: Cart[] = [];
   canCheckout = false;
 
-  // cartsTotal 改成 getter
-  get cartsTotal(): number {
-    return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
+  onQtyChange(i: number, value: string) {
+    const qty = parseInt(value, 10);
+    if (!isNaN(qty) && qty > 0) {
+      this.carts[i].qty = qty;
+      this.updateState();
+    }
   }
 
   remove(i: number) {
@@ -43,6 +48,11 @@ export class BuyCartComponent implements OnInit {
 
   updateState() {
     this.canCheckout = this.customerForm.valid && this.carts.length > 0;
+  }
+
+  // 計算總額
+  get cartsTotal(): number {
+    return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
   }
 
   checkout() {

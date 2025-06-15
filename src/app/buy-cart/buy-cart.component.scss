@@ -4,9 +4,6 @@ $border: #ddd;
 $bg-main: #fff;
 $bg-table: #fafbfc;
 $bg-table-header: #f5f6fa;
-$radius: 6px;
-$input-height: 28px;
-$input-font: 16px;
 
 .cart-page {
   display: flex;
@@ -19,7 +16,7 @@ $input-font: 16px;
     flex: 0 0 380px;
     background: $bg-main;
     border: 1px solid $border;
-    border-radius: $radius;
+    border-radius: 6px;
     padding: 20px 30px 20px 30px;
     margin-bottom: 20px;
 
@@ -64,7 +61,7 @@ $input-font: 16px;
     min-width: 480px;
     background: $bg-main;
     border: 1px solid $border;
-    border-radius: $radius;
+    border-radius: 6px;
     padding: 18px 24px 24px 24px;
 
     h3 {
@@ -85,7 +82,7 @@ $input-font: 16px;
         border: none;
         padding: 10px 7px;
         text-align: center;
-        font-size: $input-font;
+        font-size: 16px;
       }
 
       th {
@@ -111,8 +108,8 @@ $input-font: 16px;
 
         input[type='number'] {
           width: 60px;
-          height: $input-height;
-          font-size: $input-font;
+          height: 28px;
+          font-size: 16px;
           text-align: center;
           border: 1px solid #ccc;
           border-radius: 4px;
