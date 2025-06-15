@@ -68,7 +68,7 @@ export class CartService {
     }
   }
 
-  // 清空購物車（先預留，後面可用）
+  // 清空購物車
   clear() {
     this._data = [];
     this.writeStorage();

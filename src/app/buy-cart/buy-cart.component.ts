@@ -21,6 +21,10 @@ export class BuyCartComponent implements OnInit {
     this.customerForm.valueChanges.subscribe(() => this.updateState());
   }
 
+  updateState() {
+    this.canCheckout = this.customerForm.valid && this.carts.length > 0;
+  }
+
   // 基本資料
   customerForm = this.fb.group({
     name: ['', Validators.required],
@@ -48,17 +52,16 @@ export class BuyCartComponent implements OnInit {
     this.updateState();
   }
 
-  updateState() {
-    this.canCheckout = this.customerForm.valid && this.carts.length > 0;
-  }
-
-  // 計算總額
+  // 送單按鈕
   get cartsTotal(): number {
     return this.carts.reduce((sum, item) => sum + (item.specialPrice || item.price) * item.qty, 0);
   }
 
   checkout() {
     alert('訂單已送出');
-    // TODO: 清空購物車或跳轉頁面
+    this.cartService.clear(); // 1. 清空購物車
+    this.carts = this.cartService.getList(); // 2. 重新取得最新購物車（變成空陣列）
+    this.customerForm.reset(); // 3. 清空表單內容
+    this.updateState(); // 4. 更新送出按鈕狀態
   }
 }
