@@ -42,7 +42,8 @@ export class BuyCartComponent implements OnInit {
   }
 
   remove(i: number) {
-    this.carts.splice(i, 1);
+    this.cartService.remove(i);
+    this.carts = this.cartService.getList();
     this.updateState();
   }
 
