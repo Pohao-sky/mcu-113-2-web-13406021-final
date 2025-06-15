@@ -6,6 +6,8 @@ import { ProductService } from '../services/product.service';
 import { FormControl } from '@angular/forms';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { CartService } from '../services/cart.service';
+import { Cart } from '../models/cart';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -56,5 +58,28 @@ export class ProductDetailPageComponent {
 
   onBack(): void {
     this.router.navigate(['products']);
+  }
+
+  //加熱購物車
+  showAddCartMsg = false;
+
+  private cartService = inject(CartService);
+
+  addToCart() {
+    const item = this.product();
+    const cartItem = new Cart({
+      id: String(item.id),
+      name: item.name,
+      price: item.price,
+      specialPrice: item.specialPrice,
+      qty: 1,
+    });
+    this.cartService.add(cartItem);
+
+    // 顯示提示訊息
+    this.showAddCartMsg = true;
+    setTimeout(() => {
+      this.showAddCartMsg = false;
+    }, 500);
   }
 }
