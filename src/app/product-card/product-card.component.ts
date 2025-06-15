@@ -1,9 +1,11 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { booleanAttribute, Component, HostBinding, input, numberAttribute, output } from '@angular/core';
+import { CartService } from '../services/cart.service';
+import { Cart } from '../models/cart';
 
 @Component({
   selector: 'app-product-card',
-  imports: [DatePipe, CurrencyPipe],
+  imports: [DatePipe, CurrencyPipe, CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
@@ -30,4 +32,25 @@ export class ProductCardComponent {
 
   @HostBinding('class')
   class = 'app-product-cart';
+
+  showAddCartMsg = false; // 控制提示顯示
+
+  constructor(private cartService: CartService) {}
+
+  addToCart() {
+    const cartItem = new Cart({
+      id: String(this.id()),
+      name: this.productName(),
+      price: this.price(),
+      specialPrice: this.specialPrice(),
+      qty: 1,
+    });
+    this.cartService.add(cartItem);
+
+    // 顯示提示訊息
+    this.showAddCartMsg = true;
+    setTimeout(() => {
+      this.showAddCartMsg = false;
+    }, 500); // 1 秒後自動關閉
+  }
 }

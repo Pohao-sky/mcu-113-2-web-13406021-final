@@ -29,5 +29,13 @@
 </div>
 <div class="button">
   <button type="button" (click)="view.emit()">明細</button>
-  <button type="button" class="add">加入購物車</button>
+  <button type="button" class="add" (click)="addToCart()">加入購物車</button>
 </div>
+@if (showAddCartMsg) {
+<div class="add-cart-toast">
+  <div class="add-cart-toast-content">
+    <span class="icon">✔️</span>
+    <span>商品已加入購物車</span>
+  </div>
+</div>
+}
