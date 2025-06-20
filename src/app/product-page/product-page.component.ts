@@ -23,6 +23,9 @@ export class ProductPageComponent {
   readonly searchControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
   readonly searchKeyword = signal<string | undefined>(undefined);
 
+  readonly totalCount = computed(() => this.data.value().count);
+  readonly products = computed(() => this.data.value().data);
+
   private readonly data = rxResource({
     request: () => ({ name: this.searchKeyword(), pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
     defaultValue: { data: [], count: 0 },
@@ -31,9 +34,6 @@ export class ProductPageComponent {
       return this.productService.getList(name, pageIndex, pageSize);
     },
   });
-
-  readonly totalCount = computed(() => this.data.value().count);
-  readonly products = computed(() => this.data.value().data);
 
   onSearch(): void {
     // 只有按下查詢時，才會改變查詢值

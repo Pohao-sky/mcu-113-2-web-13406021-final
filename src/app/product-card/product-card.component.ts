@@ -51,6 +51,6 @@ export class ProductCardComponent {
     this.showAddCartMsg = true;
     setTimeout(() => {
       this.showAddCartMsg = false;
-    }, 500); // 1 秒後自動關閉
+    }, 500);
   }
 }

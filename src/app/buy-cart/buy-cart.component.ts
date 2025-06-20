@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Cart } from '../models/cart';
 import { CartService } from '../services/cart.service';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-buy-cart',
@@ -13,6 +14,7 @@ import { CartService } from '../services/cart.service';
 })
 export class BuyCartComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private orderService = inject(OrderService);
 
   ngOnInit(): void {
     this.carts = this.cartService.getList();
@@ -58,10 +60,24 @@ export class BuyCartComponent implements OnInit {
   }
 
   checkout() {
-    alert('訂單已送出');
-    this.cartService.clear(); // 1. 清空購物車
-    this.carts = this.cartService.getList(); // 2. 重新取得最新購物車（變成空陣列）
-    this.customerForm.reset(); // 3. 清空表單內容
-    this.updateState(); // 4. 更新送出按鈕狀態
+    const order = {
+      customer: this.customerForm.value,
+      items: this.carts,
+      total: this.cartsTotal,
+      createdAt: new Date().toISOString(),
+    };
+
+    this.orderService.createOrder(order).subscribe({
+      next: () => {
+        alert('訂單已送出');
+        this.cartService.clear();
+        this.carts = this.cartService.getList();
+        this.customerForm.reset();
+        this.updateState();
+      },
+      error: () => {
+        alert('訂單送出失敗，請稍後再試');
+      },
+    });
   }
 }

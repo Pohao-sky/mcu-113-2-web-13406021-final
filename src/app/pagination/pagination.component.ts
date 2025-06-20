@@ -1,4 +1,4 @@
-import { Component, computed, input, model, numberAttribute, output } from '@angular/core';
+import { Component, computed, input, model, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
