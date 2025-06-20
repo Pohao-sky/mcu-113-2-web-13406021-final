@@ -1,6 +1,7 @@
 // cart.service.ts
 import { Injectable } from '@angular/core';
 import { Cart } from '../models/cart';
+import { BehaviorSubject } from 'rxjs';
 
 const STORAGE_KEY = 'cart-data';
 
@@ -10,9 +11,12 @@ const STORAGE_KEY = 'cart-data';
 export class CartService {
   // 購物車內的商品
   private _data: Cart[] = [];
+  private cartSubject = new BehaviorSubject<Cart[]>([]);
+  cart$ = this.cartSubject.asObservable();
 
   constructor() {
     this._data = this.readStorage();
+    this.cartSubject.next(this._data);
   }
 
   // 讀取 localStorage
@@ -32,6 +36,7 @@ export class CartService {
   // 寫入 localStorage
   private writeStorage() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this._data));
+    this.cartSubject.next(this._data);
   }
 
   // 取得購物車內容
